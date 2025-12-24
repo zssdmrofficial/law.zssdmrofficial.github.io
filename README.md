@@ -1,1 +1,1 @@
-"# law.zssdmrofficial.github.io" 
+https://law.zssdmr.dpdns.org
