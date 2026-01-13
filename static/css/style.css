@@ -305,3 +305,30 @@ html {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
+
+/* Fix Markdown Rendering Issues */
+blockquote {
+    margin: 0;
+    padding-left: 0;
+    /* Align with headers */
+    color: var(--text-secondary);
+}
+
+.footnote-ref {
+    text-decoration: none;
+    /* Remove underline that looks like strikethrough */
+    color: var(--accent-color);
+    border-bottom: 1px dotted var(--accent-color);
+    /* Use dotted line for clarity */
+    vertical-align: super;
+    font-size: smaller;
+    margin-left: 2px;
+}
+
+.law-body h3 {
+    margin-top: 24px;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    color: var(--accent-soft);
+    font-weight: 600;
+}

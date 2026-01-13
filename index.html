@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
     <link rel="stylesheet" href="static/css/style.css" />
     <link rel="stylesheet" href="static/css/chat.css" />
+    <link rel="stylesheet" href="static/css/laws_layout.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,9 +42,23 @@
             <h1>法律條文</h1>
         </header>
 
-        <section class="content-card">
-            <div id="laws-text-container" class="liquid-glass-md"></div>
-        </section>
+        <div class="content-card search-container">
+            <input type="text" id="law-search" placeholder="搜尋法規..." aria-label="搜尋法規">
+        </div>
+
+        <div class="laws-layout">
+            <aside class="content-card laws-sidebar">
+                <nav id="laws-toc">
+                    <!-- Table of Contents will be injected here -->
+                </nav>
+            </aside>
+
+            <section class="content-card laws-content">
+                <div id="laws-text-container" class="liquid-glass-md">
+                    <!-- Law content will be injected here -->
+                </div>
+            </section>
+        </div>
 
         <div class="content-card" style="text-align: center;">
             <p style="font-size: 14px; color: var(--text-secondary);">© 2025 張師社會主義民主共和國</p>
