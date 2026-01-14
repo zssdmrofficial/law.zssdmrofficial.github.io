@@ -270,7 +270,7 @@ function processFootnotes(text) {
 
     if (parts.length > 1) {
         let footnotes = parts[1];
-        footnotes = footnotes.replace(/^## ([一二三四五六七八九十]+)、/gm, (match, chineseNum) => {
+        footnotes = footnotes.replace(/^## ([一二三四五六七八九十百零]+)、/gm, (match, chineseNum) => {
             const arabic = chineseToNumber(chineseNum);
             if (arabic) {
                 return `## ${chineseNum}、 <a id="note-${arabic}" class="footnote-anchor"></a>`;
@@ -290,9 +290,26 @@ function normalizeNumber(str) {
 }
 
 function chineseToNumber(str) {
-    const map = {
-        '一': 1, '二': 2, '三': 3, '四': 4, '五': 5,
-        '六': 6, '七': 7, '八': 8, '九': 9, '十': 10
-    };
-    return map[str];
+    const units = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9 };
+    const section = { '十': 10, '百': 100 };
+
+    let total = 0;
+    let temp = 0;
+
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+
+        if (units[char] !== undefined) {
+            temp = units[char];
+            if (i === str.length - 1) total += temp;
+        } else if (section[char] !== undefined) {
+            const val = section[char];
+            if (char === '十' && temp === 0) temp = 1;
+            total += temp * val;
+            temp = 0;
+        } else if (char === '零') {
+            temp = 0;
+        }
+    }
+    return total;
 }
