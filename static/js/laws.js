@@ -16,13 +16,11 @@ async function loadLaws() {
         let text = await res.text();
         text = processFootnotes(text);
 
-        // Parse Markdown into structured data
         lawsData = parseMarkdownStructure(text);
 
         renderTOC();
         renderSidebarContent();
 
-        // Handle URL hash for deep linking
         if (window.location.hash) {
             setTimeout(() => {
                 const id = window.location.hash.substring(1);
@@ -30,7 +28,6 @@ async function loadLaws() {
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
             }, 500);
         }
-
     } catch (err) {
         console.error("Error loading laws:", err);
         document.getElementById("laws-text-container").innerHTML = "<p>載入失敗，請稍後再試。</p>";
@@ -44,7 +41,6 @@ function parseMarkdownStructure(text) {
     let currentH2 = null;
     let buffer = [];
 
-    // Helper to save buffer to current node
     const flushBuffer = () => {
         if (buffer.length === 0) return;
         const content = buffer.join('\n');
@@ -56,7 +52,7 @@ function parseMarkdownStructure(text) {
             currentH2.html = html;
             currentH2.searchText += " " + plainText;
         } else if (currentH1) {
-            currentH1.introContent = content; // content before first H2
+            currentH1.introContent = content;
             currentH1.introHtml = html;
             currentH1.searchText += " " + plainText;
         }
@@ -69,7 +65,7 @@ function parseMarkdownStructure(text) {
 
         if (h1Match) {
             flushBuffer();
-            currentH2 = null; // Reset H2
+            currentH2 = null;
             currentH1 = {
                 id: `sec-${sections.length + 1}`,
                 title: h1Match[1].trim(),
@@ -83,7 +79,6 @@ function parseMarkdownStructure(text) {
         } else if (h2Match) {
             flushBuffer();
             if (!currentH1) {
-                // H2 without H1? Create a dummy H1 or just ignore (shouldn't happen in valid doc)
                 currentH1 = { id: 'sec-0', title: '導言', titleText: '導言', subsections: [], searchText: '' };
                 sections.push(currentH1);
             }
@@ -100,7 +95,7 @@ function parseMarkdownStructure(text) {
             buffer.push(line);
         }
     });
-    flushBuffer(); // Flush remaining
+    flushBuffer();
 
     return sections;
 }
@@ -126,7 +121,6 @@ function renderSidebarContent() {
     const container = document.getElementById('laws-text-container');
     if (!container) return;
 
-    // Clear current
     container.innerHTML = '';
 
     lawsData.forEach(h1 => {
@@ -149,33 +143,25 @@ function renderSidebarContent() {
             subDiv.innerHTML = `<h2 class="law-subtitle">${h2.title}</h2><div class="law-body">${h2.html}</div>`;
             container.appendChild(subDiv);
         });
-
     });
 }
 
 function handleSearch(keyword) {
     keyword = keyword.toLowerCase().trim();
 
-    // Filter TOC and Content
     const tocLinks = document.querySelectorAll('#laws-toc a');
     const contentSections = document.querySelectorAll('.law-section, .law-subsection');
-
-    // 1. Filter Visual Content
-    // A simple approach: Iterate over data, check visibility, then toggle DOM
-    // But working with DOM is easier for "hide parent if all children hidden" logic ??
-    // Let's go data-driven for search
 
     let hasResults = false;
 
     lawsData.forEach(h1 => {
-        // Check H1 match
         const h1Match = h1.searchText.toLowerCase().includes(keyword);
         let anyChildMatch = false;
 
         h1.subsections.forEach(h2 => {
             const h2Match = h2.searchText.toLowerCase().includes(keyword);
             const el = document.getElementById(h2.id);
-            const tocEl = document.querySelector(`a[href="#${h2.id}"]`); // rough selector
+            const tocEl = document.querySelector(`a[href="#${h2.id}"]`);
 
             if (el) el.style.display = (h1Match || h2Match) ? 'block' : 'none';
             if (tocEl) tocEl.parentElement.style.display = (h1Match || h2Match) ? 'block' : 'none';
@@ -183,14 +169,11 @@ function handleSearch(keyword) {
             if (h1Match || h2Match) anyChildMatch = true;
         });
 
-        // H1 visibility
         const el = document.getElementById(h1.id);
         const tocEl = document.querySelector(`a[href="#${h1.id}"]`);
-
         const showH1 = h1Match || anyChildMatch;
         if (el) el.style.display = showH1 ? 'block' : 'none';
 
-        // Handle HR visibility properly using ID
         const hr = document.getElementById(h1.id + '-hr');
         if (hr) {
             hr.style.display = showH1 ? 'block' : 'none';
@@ -206,7 +189,6 @@ function stripHtml(html) {
     return tmp.textContent || tmp.innerText || "";
 }
 
-// Reuse existing footnote logic
 function processFootnotes(text) {
     text = text.replace(/([（(])註([0-9０-９]+)([)）])/g, (match, open, digits, close) => {
         const arabic = normalizeNumber(digits);
@@ -218,7 +200,6 @@ function processFootnotes(text) {
 
     if (parts.length > 1) {
         let footnotes = parts[1];
-
         footnotes = footnotes.replace(/^## ([一二三四五六七八九十]+)、/gm, (match, chineseNum) => {
             const arabic = chineseToNumber(chineseNum);
             if (arabic) {
@@ -226,7 +207,6 @@ function processFootnotes(text) {
             }
             return match;
         });
-
         parts[1] = footnotes;
         text = parts.join(splitKey);
     }
