@@ -310,25 +310,81 @@ html {
 blockquote {
     margin: 0;
     padding-left: 0;
-    /* Align with headers */
     color: var(--text-secondary);
 }
 
 .footnote-ref {
     text-decoration: none;
-    /* Remove underline that looks like strikethrough */
     color: var(--accent-color);
     border-bottom: 1px dotted var(--accent-color);
-    /* Use dotted line for clarity */
     vertical-align: super;
     font-size: smaller;
     margin-left: 2px;
 }
 
+/* Hierarchy Indentation */
+
+/* Level 1: H1 (Main Sections) */
+.law-title {
+    margin-left: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+/* Level 2: H2 (Subsections) - container level indent */
+.law-subsection {
+    margin-left: 1.5rem;
+    margin-bottom: 24px;
+}
+
+/* Level 3: H3 (Inside law body) */
 .law-body h3 {
     margin-top: 24px;
     margin-bottom: 8px;
-    font-size: 1.1em;
+    font-size: 1.15em;
     color: var(--accent-soft);
     font-weight: 600;
+    margin-left: 1.5rem;
+    /* Indentation relative to H2 */
+}
+
+/* Content following H3 */
+.law-body h3+blockquote,
+.law-body h3+p,
+.law-body h3+ul,
+.law-body h3+ol {
+    margin-left: 1.5rem;
+}
+
+/* Level 4: H4 */
+.law-body h4 {
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-size: 1em;
+    color: var(--accent-soft);
+    margin-left: 3rem;
+    /* Indentation relative to H2 */
+}
+
+/* Content following H4 */
+.law-body h4+blockquote,
+.law-body h4+p,
+.law-body h4+ul,
+.law-body h4+ol {
+    margin-left: 3rem;
+}
+
+/* Simple Full-Width HR */
+.liquid-glass-md hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 40px -20px;
+}
+
+.law-subsection hr {
+    /* Offset the parent .law-subsection's 1.5rem margin-left and the container's 20px padding */
+    margin-left: calc(-1.5rem - 20px) !important;
+    margin-right: -20px !important;
+    width: auto;
 }

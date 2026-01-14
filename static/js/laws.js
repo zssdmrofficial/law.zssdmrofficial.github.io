@@ -150,9 +150,6 @@ function renderSidebarContent() {
             container.appendChild(subDiv);
         });
 
-        const hr = document.createElement('hr');
-        hr.id = h1.id + '-hr';
-        container.appendChild(hr);
     });
 }
 
