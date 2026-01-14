@@ -467,3 +467,12 @@ blockquote {
         max-height: 300px;
     }
 }
+
+mark {
+    background: var(--accent-glow);
+    color: var(--accent-strong);
+    padding: 0 2px;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 0 8px var(--accent-glow);
+}

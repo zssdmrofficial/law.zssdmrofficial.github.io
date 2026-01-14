@@ -147,31 +147,44 @@ function renderSidebarContent() {
 }
 
 function handleSearch(keyword) {
-    keyword = keyword.toLowerCase().trim();
-
-    const tocLinks = document.querySelectorAll('#laws-toc a');
-    const contentSections = document.querySelectorAll('.law-section, .law-subsection');
-
-    let hasResults = false;
+    const cleanKeyword = keyword.toLowerCase().trim();
 
     lawsData.forEach(h1 => {
-        const h1Match = h1.searchText.toLowerCase().includes(keyword);
+        const h1Match = h1.searchText.toLowerCase().includes(cleanKeyword);
         let anyChildMatch = false;
 
+        const h1El = document.getElementById(h1.id);
+        if (h1El) {
+            const titleEl = h1El.querySelector('.law-title');
+            const introEl = h1El.querySelector('.law-intro');
+
+            if (titleEl) titleEl.innerHTML = cleanKeyword ? highlightHTML(h1.title, cleanKeyword) : h1.title;
+            if (introEl) introEl.innerHTML = cleanKeyword ? highlightHTML(h1.introHtml, cleanKeyword) : h1.introHtml;
+        }
+
         h1.subsections.forEach(h2 => {
-            const h2Match = h2.searchText.toLowerCase().includes(keyword);
+            const h2Match = h2.searchText.toLowerCase().includes(cleanKeyword);
             const el = document.getElementById(h2.id);
             const tocEl = document.querySelector(`a[href="#${h2.id}"]`);
 
-            if (el) el.style.display = (h1Match || h2Match) ? 'block' : 'none';
-            if (tocEl) tocEl.parentElement.style.display = (h1Match || h2Match) ? 'block' : 'none';
+            const isMatch = h1Match || h2Match;
+            if (el) {
+                el.style.display = (!cleanKeyword || isMatch) ? 'block' : 'none';
 
-            if (h1Match || h2Match) anyChildMatch = true;
+                const subtitleEl = el.querySelector('.law-subtitle');
+                const bodyEl = el.querySelector('.law-body');
+
+                if (subtitleEl) subtitleEl.innerHTML = cleanKeyword ? highlightHTML(h2.title, cleanKeyword) : h2.title;
+                if (bodyEl) bodyEl.innerHTML = cleanKeyword ? highlightHTML(h2.html, cleanKeyword) : h2.html;
+            }
+            if (tocEl) tocEl.parentElement.style.display = (!cleanKeyword || isMatch) ? 'block' : 'none';
+
+            if (isMatch) anyChildMatch = true;
         });
 
         const el = document.getElementById(h1.id);
         const tocEl = document.querySelector(`a[href="#${h1.id}"]`);
-        const showH1 = h1Match || anyChildMatch;
+        const showH1 = !cleanKeyword || h1Match || anyChildMatch;
         if (el) el.style.display = showH1 ? 'block' : 'none';
 
         const hr = document.getElementById(h1.id + '-hr');
@@ -181,6 +194,41 @@ function handleSearch(keyword) {
 
         if (tocEl) tocEl.parentElement.style.display = showH1 ? 'block' : 'none';
     });
+}
+
+function highlightHTML(html, keyword) {
+    if (!keyword || !html) return html;
+
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedKeyword})`, 'gi');
+
+    const container = document.createElement('div');
+    container.innerHTML = html;
+
+    const walk = (node) => {
+        if (node.nodeType === 3) {
+            const text = node.textContent;
+            const parts = text.split(regex);
+            if (parts.length > 1) {
+                const fragment = document.createDocumentFragment();
+                parts.forEach((part, i) => {
+                    if (i % 2 === 1) {
+                        const mark = document.createElement('mark');
+                        mark.textContent = part;
+                        fragment.appendChild(mark);
+                    } else if (part.length > 0) {
+                        fragment.appendChild(document.createTextNode(part));
+                    }
+                });
+                node.parentNode.replaceChild(fragment, node);
+            }
+        } else if (node.nodeType === 1 && !['MARK', 'SCRIPT', 'STYLE'].includes(node.tagName)) {
+            Array.from(node.childNodes).forEach(walk);
+        }
+    };
+
+    walk(container);
+    return container.innerHTML;
 }
 
 function stripHtml(html) {
