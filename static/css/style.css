@@ -271,6 +271,7 @@ html,
 body {
     overflow-y: overlay;
     background-color: transparent;
+    scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {
@@ -480,4 +481,20 @@ mark {
 #law-search::placeholder {
     color: rgba(255, 255, 255, 0.4);
     opacity: 1;
+}
+
+@keyframes highlight-blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.highlight-active {
+    animation: highlight-blink 1s ease-in-out 1;
 }

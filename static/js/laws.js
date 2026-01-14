@@ -25,7 +25,13 @@ async function loadLaws() {
             setTimeout(() => {
                 const id = window.location.hash.substring(1);
                 const el = document.getElementById(id);
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                        el.classList.add('highlight-active');
+                        setTimeout(() => el.classList.remove('highlight-active'), 1000);
+                    }, 800);
+                }
             }, 500);
         }
     } catch (err) {
@@ -115,6 +121,22 @@ function renderTOC() {
     });
     html += '</ul>';
     tocContainer.innerHTML = html;
+
+    tocContainer.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const id = link.getAttribute('href').substring(1);
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.remove('highlight-active');
+                setTimeout(() => {
+                    target.classList.add('highlight-active');
+                    setTimeout(() => {
+                        target.classList.remove('highlight-active');
+                    }, 1000);
+                }, 600);
+            }
+        });
+    });
 }
 
 function renderSidebarContent() {
