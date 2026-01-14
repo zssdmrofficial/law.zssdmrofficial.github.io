@@ -476,3 +476,8 @@ mark {
     font-weight: bold;
     box-shadow: 0 0 8px var(--accent-glow);
 }
+
+#law-search::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+}
