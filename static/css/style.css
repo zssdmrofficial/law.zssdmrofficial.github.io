@@ -306,7 +306,6 @@ html {
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
-/* Fix Markdown Rendering Issues */
 blockquote {
     margin: 0;
     padding-left: 0;
@@ -322,9 +321,6 @@ blockquote {
     margin-left: 2px;
 }
 
-/* Hierarchy Indentation */
-
-/* Level 1: H1 (Main Sections) */
 .law-title {
     margin-left: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -332,13 +328,11 @@ blockquote {
     margin-bottom: 20px;
 }
 
-/* Level 2: H2 (Subsections) - container level indent */
 .law-subsection {
     margin-left: 1.5rem;
     margin-bottom: 24px;
 }
 
-/* Level 3: H3 (Inside law body) */
 .law-body h3 {
     margin-top: 24px;
     margin-bottom: 8px;
@@ -346,10 +340,8 @@ blockquote {
     color: var(--accent-soft);
     font-weight: 600;
     margin-left: 1.5rem;
-    /* Indentation relative to H2 */
 }
 
-/* Content following H3 */
 .law-body h3+blockquote,
 .law-body h3+p,
 .law-body h3+ul,
@@ -357,17 +349,14 @@ blockquote {
     margin-left: 1.5rem;
 }
 
-/* Level 4: H4 */
 .law-body h4 {
     margin-top: 16px;
     margin-bottom: 6px;
     font-size: 1em;
     color: var(--accent-soft);
     margin-left: 3rem;
-    /* Indentation relative to H2 */
 }
 
-/* Content following H4 */
 .law-body h4+blockquote,
 .law-body h4+p,
 .law-body h4+ul,
@@ -375,7 +364,6 @@ blockquote {
     margin-left: 3rem;
 }
 
-/* Simple Full-Width HR */
 .liquid-glass-md hr {
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -383,13 +371,11 @@ blockquote {
 }
 
 .law-subsection hr {
-    /* Offset the parent .law-subsection's 1.5rem margin-left and the container's 20px padding */
     margin-left: calc(-1.5rem - 20px) !important;
     margin-right: -20px !important;
     width: auto;
 }
 
-/* Layout for Laws Page */
 .laws-layout {
     display: flex;
     gap: 24px;
@@ -408,10 +394,8 @@ blockquote {
 .laws-content {
     flex: 1;
     min-width: 0;
-    /* Prevent flex item from overflowing */
 }
 
-/* Specific Sidebar Styling */
 #laws-toc ul {
     list-style: none;
     padding: 0;
@@ -445,7 +429,6 @@ blockquote {
     border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Search Bar */
 .search-container {
     padding: 20px;
     display: flex;
@@ -472,7 +455,6 @@ blockquote {
     box-shadow: 0 0 15px var(--accent-glow);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .laws-layout {
         flex-direction: column;
