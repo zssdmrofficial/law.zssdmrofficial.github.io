@@ -4,8 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
     loadLaws();
 
     const searchInput = document.getElementById('law-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+    const searchClear = document.getElementById('search-clear');
+
+    if (searchInput && searchClear) {
+        searchInput.addEventListener('input', (e) => {
+            const value = e.target.value;
+            handleSearch(value);
+            searchClear.style.display = value ? 'flex' : 'none';
+        });
+
+        searchClear.addEventListener('click', () => {
+            searchInput.value = '';
+            handleSearch('');
+            searchClear.style.display = 'none';
+            searchInput.focus();
+        });
     }
 });
 

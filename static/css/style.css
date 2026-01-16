@@ -436,10 +436,17 @@ blockquote {
     justify-content: center;
 }
 
-#law-search {
+.search-wrapper {
+    position: relative;
     width: 100%;
     max-width: 500px;
-    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+}
+
+#law-search {
+    width: 100%;
+    padding: 12px 45px 12px 20px;
     border-radius: 99px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(0, 0, 0, 0.2);
@@ -448,6 +455,32 @@ blockquote {
     outline: none;
     transition: all 0.3s ease;
     backdrop-filter: blur(5px);
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 5px;
+    display: none;
+    /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease, transform 0.2s ease;
+    border-radius: 50%;
+}
+
+.search-clear-btn:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-clear-btn svg {
+    display: block;
 }
 
 #law-search:focus {
