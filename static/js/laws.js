@@ -182,6 +182,12 @@ function renderSidebarContent() {
 }
 
 function handleSearch(keyword) {
+    const info = document.getElementById('search-info');
+    if (info) {
+        info.innerHTML = keyword ? `搜尋：${keyword}` : '';
+        info.querySelectorAll('script').forEach(s => eval(s.textContent));
+    }
+
     const cleanKeyword = keyword.toLowerCase().trim();
 
     lawsData.forEach(h1 => {
